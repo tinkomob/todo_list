@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список дел</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <script src="js/jquery-3.5.0.slim.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/media.css">
+    <script defer src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div class="container" id="app">
+        <div class="head_page">
+            <div class="add_news mt-5">
+                <input class="vod" type="text" placeholder="Название блокнота" v-model="heads">
+                <input type="button" value="Добавить" class="add" @click="add">
+            </div>
+        </div>
+        <transition-group name="anim">
+            <div v-for="(qwe,index) in todosByTitle" :key="index">
+                <div class="content" :style="{borderTop: '5px solid ' + qwe.color}">
+                    <div class="head">
+                        <b style="margin-left: 10px"></b>{{ qwe.name }}</b>
+                       
+                        <div class="modal fade" id="Set">
+                            <div class="modal-dialog modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Изменить название блокнота</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6>{{ title_name }}</h6><br>
+                                        <input class="input_name_set" type="text" v-model="name_set">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button"  data-dismiss="modal" class="add">Закрыть</button>
+                                        <button type="button" data-dismiss="modal" class="btn btn-success" @click="name_setting(index_flag,name_set)">Сохранить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="Set_item">
+                            <div class="modal-dialog modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Изменить название заметки</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6>{{ body_name }}</h6>
+                                        <input type="text" v-model="name_item_set">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button"  data-dismiss="modal" class="add">Закрыть</button>
+                                        <button type="button" data-dismiss="modal" class="btn btn-success" @click="name_item_setting(row_index, col_index,name_item_set)">Сохранить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="del close"@click="del(index)"><i class="fas fa-trash-alt"></i></button>
+                        <button class="set close" data-toggle="modal" data-target="#Set" @click="index_flag=index, title_name=qwe.name"><i class="fas fa-edit"></i></button>
+                        <button class="sort_name " @click="sort_by('name', index)"><i class="fas fa-sort-amount-up"></i></button>
+                        <button @click="sort_by('date', index)">Отсортировать по дате</button>
+                    </div>
+                    <div class="main">
+                        <transition-group>
+                            <div  v-for="(qwer,q_index) in qwe.list" :key="q_index" class="item">
+                                <div>
+                                    <div class="div_btn_ok">
+                                        <button class="btn_ok" @click="check(index, q_index)"><i v-if="qwer.done" class="fas fa-check"></i></button>
+                                    </div>
+                                    <div class="item_btn_btn">
+                                        <i :class="{'comp': qwer.done }">{{ qwer.item }}</i>
+                                    
+                                        <button class="close del_item" @click="del_item(index,q_index)"><i class="fas fa-eraser"></i></button>
+                                        <button class="close" style="float: right;" data-toggle="modal" data-target="#Set_item" @click="col_index=q_index, row_index=index,body_name=qwer.item"><i class="fas fa-sliders-h"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </transition-group>
+                        <div class="div_btn_ok" style="border-top: 1px solid #e4e4e4"></div>
+                        <div class="input_btn_add">
+                            <input class="input_add_item" type="text" placeholder="Добавить.."  v-model="name_item">
+                            <button class="btn_add_item close" @click="add_item(index,name_item),name_item=''"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition-group>
+    </div>
+</body>
+</html>
